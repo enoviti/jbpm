@@ -1,0 +1,28 @@
+//created on: Jan 8, 2013
+package org.acme.insurance.pricing
+
+rule "riskyadults2"
+dialect "mvel"
+
+    when
+        driver : Driver(age > 24, numberOfAccidents > 0 || numberOfTickets >= 2)
+		policy : Policy(price == 0, policyType == "AUTO")
+    then
+        modify(policy) {price = 300}
+        System.out.println("fired rule " + kcontext.getRule().getName());
+        
+
+end
+
+rule "riskyyouths2"
+dialect "mvel"
+
+    when
+        driver : Driver(age > 18 && age < 24, numberOfAccidents > 0 || numberOfTickets >= 2)
+		policy : Policy(price == 0, policyType == "AUTO")
+    then
+        modify(policy) {price = 700}
+        System.out.println("fired rule " + kcontext.getRule().getName());
+        
+
+end

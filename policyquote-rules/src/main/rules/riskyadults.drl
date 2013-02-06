@@ -1,0 +1,17 @@
+package org.acme.insurance
+
+rule "riskyadults"
+dialect "java"
+ruleflow-group "calculation"
+
+
+    when
+	
+        driver : Driver(age > 24, numberOfAccidents > 0 || numberOfTickets >= 2)
+		policy : Policy(price == 0, policyType == "AUTO")
+    then
+        modify(policy) {setPrice (300)}
+        System.out.println("fired rule " + kcontext.getRule().getName());
+        
+
+end

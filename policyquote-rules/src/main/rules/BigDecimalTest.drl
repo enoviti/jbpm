@@ -1,0 +1,24 @@
+//created on: 2012-dec-03
+package se.sjv.staket.ankomst
+
+dialect "mvel" 
+
+import java.util.Calendar;
+import java.math.BigDecimal;
+import se.sjv.rules.DataCarrier;
+
+rule "Sum-rule"
+	no-loop
+	salience -1000
+	when
+		$result: DataCarrier();
+		$summan: BigDecimal()
+		     from accumulate( DataCarrier(
+             	$value: value),
+                              sum( $value) );
+	then
+		modify ($result) {
+			value = $summan;
+		}
+end
+

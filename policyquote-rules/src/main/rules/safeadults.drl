@@ -1,0 +1,19 @@
+//created on: Dec 18, 2012
+package org.acme.insurance
+
+rule "safeadults"
+dialect "mvel" 
+ruleflow-group "calculation"
+
+    when
+        #conditions
+		driver : Driver(age > 24 && age < 80, numberOfAccidents == 0 && numberOfTickets < 2)
+		policy : Policy(price == 0, policyType == "AUTO")
+
+    then
+        modify(policy) {price = 120}
+        System.out.println("fired rule " + kcontext.getRule().getName());
+        
+
+end
+

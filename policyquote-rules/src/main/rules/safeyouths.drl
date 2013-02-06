@@ -1,0 +1,17 @@
+//created on: Dec 18, 2012
+package org.acme.insurance.pricing
+
+rule "safeyouths"
+dialect "mvel" 
+
+    when
+        #conditions
+		driver : Driver(age > 18 && age < 24, numberOfAccidents == 0 && numberOfTickets < 2)
+		policy : Policy(price == 0, policyType == "AUTO")
+
+    then
+        modify(policy) {price = 450}
+        System.out.println("fired rule " + kcontext.getRule().getName());
+
+end
+

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.omg.org/bpmn20"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <process processType="Private" isExecutable="true" id="org.acme.insurance.pricing.policyquotecalculationprocess" name="policyquotecalculationprocess" tns:packageName="org.acme.insurance.pricing" >
+
+    <!-- nodes -->
+    <startEvent id="_1681102E-E478-4927-96F4-511C3CBC772A" name="start" />
+    <businessRuleTask id="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" name="Rejection" g:ruleFlowGroup="rejection" >
+    </businessRuleTask>
+    <exclusiveGateway id="_2A5136AB-6174-4568-9686-8576A78C74FF" name="Gateway" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" name="Join Gateway" gatewayDirection="Converging" />
+    <endEvent id="_DB31C1A2-C85F-4739-AC27-94986F45E916" name="" />
+    <businessRuleTask id="_259C3EE7-787B-4004-8111-1859048F6BB4" name="Calculation" g:ruleFlowGroup="calculation" >
+    </businessRuleTask>
+    <businessRuleTask id="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" name="Surcharge" g:ruleFlowGroup="surcharge" >
+    </businessRuleTask>
+    <businessRuleTask id="_29E89220-7C30-4C97-A001-6C2BC99936EA" name="Discount" g:ruleFlowGroup="discount" >
+    </businessRuleTask>
+    <businessRuleTask id="_DDB86809-AF8C-4956-9250-2CDF4A888AB1" name="Total" g:ruleFlowGroup="total" >
+    </businessRuleTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_1681102E-E478-4927-96F4-511C3CBC772A-_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" sourceRef="_1681102E-E478-4927-96F4-511C3CBC772A" targetRef="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" />
+    <sequenceFlow id="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E-_2A5136AB-6174-4568-9686-8576A78C74FF" sourceRef="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" targetRef="_2A5136AB-6174-4568-9686-8576A78C74FF" />
+    <sequenceFlow id="_2A5136AB-6174-4568-9686-8576A78C74FF-_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" sourceRef="_2A5136AB-6174-4568-9686-8576A78C74FF" targetRef="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" name="Rejection" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >Rejection()</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_DDB86809-AF8C-4956-9250-2CDF4A888AB1-_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" sourceRef="_DDB86809-AF8C-4956-9250-2CDF4A888AB1" targetRef="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" />
+    <sequenceFlow id="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A-_DB31C1A2-C85F-4739-AC27-94986F45E916" sourceRef="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" targetRef="_DB31C1A2-C85F-4739-AC27-94986F45E916" />
+    <sequenceFlow id="_2A5136AB-6174-4568-9686-8576A78C74FF-_259C3EE7-787B-4004-8111-1859048F6BB4" sourceRef="_2A5136AB-6174-4568-9686-8576A78C74FF" targetRef="_259C3EE7-787B-4004-8111-1859048F6BB4" name="Non rejection " tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >not Rejection()</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_259C3EE7-787B-4004-8111-1859048F6BB4-_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" sourceRef="_259C3EE7-787B-4004-8111-1859048F6BB4" targetRef="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" />
+    <sequenceFlow id="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673-_29E89220-7C30-4C97-A001-6C2BC99936EA" sourceRef="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" targetRef="_29E89220-7C30-4C97-A001-6C2BC99936EA" />
+    <sequenceFlow id="_29E89220-7C30-4C97-A001-6C2BC99936EA-_DDB86809-AF8C-4956-9250-2CDF4A888AB1" sourceRef="_29E89220-7C30-4C97-A001-6C2BC99936EA" targetRef="_DDB86809-AF8C-4956-9250-2CDF4A888AB1" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="org.acme.insurance.pricing.policyquotecalculationprocess" >
+      <bpmndi:BPMNShape bpmnElement="_1681102E-E478-4927-96F4-511C3CBC772A" >
+        <dc:Bounds x="13" y="86" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" >
+        <dc:Bounds x="138" y="69" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2A5136AB-6174-4568-9686-8576A78C74FF" >
+        <dc:Bounds x="311" y="85" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" >
+        <dc:Bounds x="866" y="85" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_DB31C1A2-C85F-4739-AC27-94986F45E916" >
+        <dc:Bounds x="1000" y="85" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_259C3EE7-787B-4004-8111-1859048F6BB4" >
+        <dc:Bounds x="375" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" >
+        <dc:Bounds x="548" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29E89220-7C30-4C97-A001-6C2BC99936EA" >
+        <dc:Bounds x="675" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_DDB86809-AF8C-4956-9250-2CDF4A888AB1" >
+        <dc:Bounds x="840" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1681102E-E478-4927-96F4-511C3CBC772A-_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E" >
+        <di:waypoint x="37" y="110" />
+        <di:waypoint x="188" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_EE1AFC3C-046A-4389-BBE0-A1040E7FEF7E-_2A5136AB-6174-4568-9686-8576A78C74FF" >
+        <di:waypoint x="188" y="109" />
+        <di:waypoint x="335" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2A5136AB-6174-4568-9686-8576A78C74FF-_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" >
+        <di:waypoint x="335" y="109" />
+        <di:waypoint x="890" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_DDB86809-AF8C-4956-9250-2CDF4A888AB1-_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A" >
+        <di:waypoint x="890" y="220" />
+        <di:waypoint x="890" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_DEB90D89-FB16-41CC-891F-99BFF4AB4A3A-_DB31C1A2-C85F-4739-AC27-94986F45E916" >
+        <di:waypoint x="890" y="109" />
+        <di:waypoint x="1024" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2A5136AB-6174-4568-9686-8576A78C74FF-_259C3EE7-787B-4004-8111-1859048F6BB4" >
+        <di:waypoint x="335" y="109" />
+        <di:waypoint x="335" y="220" />
+        <di:waypoint x="425" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_259C3EE7-787B-4004-8111-1859048F6BB4-_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673" >
+        <di:waypoint x="425" y="220" />
+        <di:waypoint x="598" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9B07C7BC-B9B7-4AC9-8F46-E1BB4AE5B673-_29E89220-7C30-4C97-A001-6C2BC99936EA" >
+        <di:waypoint x="598" y="220" />
+        <di:waypoint x="725" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29E89220-7C30-4C97-A001-6C2BC99936EA-_DDB86809-AF8C-4956-9250-2CDF4A888AB1" >
+        <di:waypoint x="725" y="220" />
+        <di:waypoint x="890" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

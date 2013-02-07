@@ -24,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * This is a sample class to launch a rule.
+ * NOTE: Can't have ruleflow-group in the DRLs for this to work.
  */
 
 

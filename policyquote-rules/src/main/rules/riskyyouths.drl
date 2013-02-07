@@ -3,6 +3,7 @@ package org.acme.insurance.pricing
 
 rule "riskyyouths"
 dialect "mvel"
+ruleflow-group "calculation"
 
     when
         driver : Driver(age > 18 && age < 24, numberOfAccidents > 0 || numberOfTickets >= 2)

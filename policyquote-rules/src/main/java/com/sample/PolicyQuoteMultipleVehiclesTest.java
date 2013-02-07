@@ -13,6 +13,7 @@ import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
+import org.drools.runtime.rule.impl.AgendaImpl;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -92,6 +93,12 @@ public class PolicyQuoteMultipleVehiclesTest {
 			FactHandle policyFH = ksession.insert(policy);
 			FactHandle policy2FH = ksession.insert(policy2);
 			FactHandle policyMFH = ksession.insert(policyM);
+			
+			//ACtivate the ruleflow-group
+			AgendaImpl agenda = (AgendaImpl)ksession.getAgenda();
+            agenda.activateRuleFlowGroup("calculation");          
+            agenda.activateRuleFlowGroup("total");
+			
 			ksession.fireAllRules();
 			//logger.close();
 			ksession.retract(driverFH);

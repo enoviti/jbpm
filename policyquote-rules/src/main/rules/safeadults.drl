@@ -1,5 +1,5 @@
 //created on: Dec 18, 2012
-package org.acme.insurance
+package org.acme.insurance.pricing
 
 rule "safeadults"
 dialect "mvel" 

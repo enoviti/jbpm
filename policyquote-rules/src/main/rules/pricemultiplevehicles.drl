@@ -3,14 +3,15 @@ package org.acme.insurance.pricing
 
 rule "PriceMultipleVehicles"
 dialect "java" 
-salience "-10"
+salience "10"
+ruleflow-group "total"
+
 
     when
     	adriver: Driver()
     	pMaster: Policy(driver==adriver,policyType=="MASTER",price==0)
     	totalPrice: Number( intValue > 0 )
-    	from accumulate( Policy(driver==adriver,policyType=="AUTO", priceVal:price),
-        	sum(priceVal))
+    	from accumulate( Policy(driver==adriver,policyType=="AUTO", priceVal:price), sum(priceVal))
     then
         //actions
         modify(pMaster) {setPrice(totalPrice.intValue())}

@@ -1,0 +1,10 @@
+package se.sjv.test.swedish
+
+dialect "mvel" 
+
+rule "MyRuleÅÄÖ"
+    when
+    then
+    	System.out.println("Swedish rule read ÅÖÄåöä");
+end
+

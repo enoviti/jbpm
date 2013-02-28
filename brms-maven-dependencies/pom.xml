@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.miguel</groupId>
+    <artifactId>brms-maven-dependencies</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>brms-maven-dependencies</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <distro.brms.version>5.3.1</distro.brms.version>
+        <maven.brms.version>5.3.1.BRMS</maven.brms.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+  
+    <profiles>
+        <profile>
+            <id>deploy-to-maven</id>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <property name="compile.classpath" refid="maven.compile.classpath" />
+                                        <property name="maven.repo" value="${settings.localRepository}" />
+                                        <property name="build.dir" value="${project.build.outputDirectory}" />
+
+                                        <mkdir dir="${build.dir}/m2/${maven.brms.version}" />
+
+                                        <unzip
+                                            src="src/main/resources/brms-p-${distro.brms.version}.GA-deployable-ee6.zip"
+                                            dest="${build.dir}">
+                                            <patternset>
+                                                <include name="**/*brms-engine*.zip" />
+                                                <include name="**/*manager*.zip" />
+                                            </patternset>
+                                        </unzip>
+                                        <unzip src="${build.dir}/jboss-brms-engine.zip" dest="${build.dir}/jboss-brms-engine">
+                                            <patternset>
+                                                <include name="**/*antlr-runtime*.jar" />
+                                                <include name="**/*ecj*.jar" />
+                                                <include name="**/*mvel2*.jar" />
+                                                <include name="**/*BRMS*.jar" />
+                                                <exclude name="**/examples/*" />
+                                            </patternset>
+                                        </unzip>
+                                        <move todir="${build.dir}/jboss-brms-engine">
+                                            <fileset dir="${build.dir}/jboss-brms-engine">
+                                                <include name="**/*BRMS*.jar" />
+                                            </fileset>
+                                        </move>
+                                        <move flatten="true" todir="${build.dir}/m2/${maven.brms.version}">
+                                            <fileset dir="${build.dir}/jboss-brms-engine">
+                                                <include name="**/*.jar" />
+                                            </fileset>
+                                        </move>
+                                        <unzip src="${build.dir}/jboss-brms-manager-ee6.zip" dest="${build.dir}/jboss-brms-manager">
+                                            <patternset>
+                                                <include name="**/*" />
+                                            </patternset>
+                                        </unzip>
+                                        <copy todir="${build.dir}/jboss-brms-manager">
+                                            <fileset dir="src/main/resources">
+                                                <include name="**/*components.xml" />
+                                            </fileset>
+                                        </copy>
+                                        <zip basedir="${build.dir}/jboss-brms-manager/jboss-brms.war"
+                                             destfile="${build.dir}/m2/${maven.brms.version}/jboss-brms-${maven.brms.version}.war" />
+
+                                        <copy todir="${build.dir}/m2/${maven.brms.version}">
+                                            <fileset dir="src/main/resources">
+                                                <include name="**/*bulk-importer*.*" />
+                                                <include name="**/*.sh" />
+                                                <include name="**/*.bat" />
+                                            </fileset>
+                                        </copy>
+                                        <exec failonerror="true" executable="chmod">
+                                            <arg value="0744" />
+                                            <arg value="${build.dir}/m2/${maven.brms.version}/install-drools-runtime.sh" />
+                                        </exec>
+                                        <exec failonerror="true" dir="${build.dir}/m2/${maven.brms.version}" executable="./install-drools-runtime.sh"/>
+
+                                        <echo
+                                            message="This script is incomplete. please go into target/classes/m2/5.3.1 and run the install script" />
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                   <!--
+                    <plugin>
+                        <groupId>org.jboss.maven.plugin.resolver</groupId>
+                        <artifactId>plugin</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                        <executions>
+                            <execution>
+                                <id>deploy-brms-to-maven</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                                <configuration>
+                                    <rootDir>target/classes/m2</rootDir>
+                                    <targetDir>/tmp/brms</targetDir>
+                                    <versionRegExp>([^/]*)/.*</versionRegExp>
+                                    <groupPrefix>jboss-enterprise/brms</groupPrefix>
+                                    <groupMaskRegExp>[^/]*/(.*)</groupMaskRegExp>
+                                    <excludeRegExp>/samples|/examples|/docs|/tmp|/temp|/work|/src</excludeRegExp>
+                                    <repositoryId>${maven.repository.id}</repositoryId>
+                                    <repositoryUrl>${maven.repository.url}</repositoryUrl>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>regexp</groupId>
+                                <artifactId>regexp</artifactId>
+                                <version>1.2</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.twdata.maven</groupId>
+                                <artifactId>mojo-executor</artifactId>
+                                <version>0.1</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-deploy-plugin</artifactId>
+                                <version>2.4</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    -->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

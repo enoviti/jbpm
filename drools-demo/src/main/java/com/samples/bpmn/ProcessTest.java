@@ -1,4 +1,4 @@
-package com.sample;
+package com.samples.bpmn;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -12,12 +12,10 @@ import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
-import com.sample.models.Message;
-
 /**
- * This is a sample class to launch a rule.
+ * This is a sample file to launch a process.
  */
-public class DroolsTest {
+public class ProcessTest {
 
     public static final void main(String[] args) {
         try {
@@ -25,12 +23,8 @@ public class DroolsTest {
             KnowledgeBase kbase = readKnowledgeBase();
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
             KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "test");
-            // go !
-            Message message = new Message();
-            message.setMessage("Hello World");
-            message.setStatus(Message.HELLO);
-            ksession.insert(message);
-            ksession.fireAllRules();
+            // start a new process instance
+            ksession.startProcess("com.sample.ruleflow");
             logger.close();
         } catch (Throwable t) {
             t.printStackTrace();
@@ -39,7 +33,7 @@ public class DroolsTest {
 
     private static KnowledgeBase readKnowledgeBase() throws Exception {
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kbuilder.add(ResourceFactory.newClassPathResource("Sample.drl"), ResourceType.DRL);
+        kbuilder.add(ResourceFactory.newClassPathResource("ruleflow.rf"), ResourceType.DRF);
         KnowledgeBuilderErrors errors = kbuilder.getErrors();
         if (errors.size() > 0) {
             for (KnowledgeBuilderError error: errors) {
@@ -51,6 +45,5 @@ public class DroolsTest {
         kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
         return kbase;
     }
-
 
 }

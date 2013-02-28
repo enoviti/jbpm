@@ -1,4 +1,4 @@
-package com.miguel.swedish;
+package com.sample;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -11,14 +11,15 @@ import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
-import org.junit.Test;
+import org.drools.runtime.rule.impl.AgendaImpl;
 
 import com.sample.models.Message;
 
-public class SwedishCharatersTest {
+public class CallRuleTest {
 	
-	private void setupTestCase() {
-		try {
+	
+	public static final void main(String[] args) {
+        try {
             // load up the knowledge base
             KnowledgeBase kbase = readKnowledgeBase();
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
@@ -30,8 +31,9 @@ public class SwedishCharatersTest {
             message.setStatus(Message.HELLO);
             ksession.insert(message);
             
-            //AgendaImpl agenda = (AgendaImpl)ksession.getAgenda();
-            //agenda.activateRuleFlowGroup("group1");
+            //To call a rule that is part of a process, first we need to activate it.
+            AgendaImpl agenda = (AgendaImpl)ksession.getAgenda();
+            agenda.activateRuleFlowGroup("group1");
             
             //ksession.startProcess("log-me");
             ksession.fireAllRules();
@@ -40,18 +42,11 @@ public class SwedishCharatersTest {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-		
-	}
-	
-	@Test
-	public void loadRuleWithSwedishCharaters() {
-		setupTestCase();
-		
-	}
+    }
 	
 	private static KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add(ResourceFactory.newClassPathResource("Swedish.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("log-me.drl"), ResourceType.DRL);
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 		
 		if(errors.size() > 0){
@@ -65,6 +60,5 @@ public class SwedishCharatersTest {
         return kbase;
 		
 	}
-	
 
 }

@@ -53,6 +53,7 @@
                                             <patternset>
                                                 <include name="**/*brms-engine*.zip" />
                                                 <include name="**/*manager*.zip" />
+						<include name="**/*jbpm-engine*.zip" />
                                             </patternset>
                                         </unzip>
                                         <unzip src="${build.dir}/jboss-brms-engine.zip" dest="${build.dir}/jboss-brms-engine">
@@ -64,8 +65,18 @@
                                                 <exclude name="**/examples/*" />
                                             </patternset>
                                         </unzip>
-                                        <move todir="${build.dir}/jboss-brms-engine">
+					<move todir="${build.dir}/jboss-brms-engine">
                                             <fileset dir="${build.dir}/jboss-brms-engine">
+                                                <include name="**/*BRMS*.jar" />
+                                            </fileset>
+                                        </move>
+					<unzip src="${build.dir}/jboss-jbpm-engine.zip" dest="${build.dir}/jboss-jbpm-engine">
+                                            <patternset>
+                                                <include name="**/*jbpm*.jar" />
+                                            </patternset>
+                                        </unzip>
+					<move todir="${build.dir}/jboss-jbpm-engine">
+                                            <fileset dir="${build.dir}/jboss-jbpm-engine">
                                                 <include name="**/*BRMS*.jar" />
                                             </fileset>
                                         </move>
@@ -73,7 +84,11 @@
                                             <fileset dir="${build.dir}/jboss-brms-engine">
                                                 <include name="**/*.jar" />
                                             </fileset>
+					    <fileset dir="${build.dir}/jboss-jbpm-engine">
+                                                <include name="**/*.jar" />
+                                            </fileset>
                                         </move>
+					<!--
                                         <unzip src="${build.dir}/jboss-brms-manager-ee6.zip" dest="${build.dir}/jboss-brms-manager">
                                             <patternset>
                                                 <include name="**/*" />
@@ -86,6 +101,7 @@
                                         </copy>
                                         <zip basedir="${build.dir}/jboss-brms-manager/jboss-brms.war"
                                              destfile="${build.dir}/m2/${maven.brms.version}/jboss-brms-${maven.brms.version}.war" />
+					-->
 
                                         <copy todir="${build.dir}/m2/${maven.brms.version}">
                                             <fileset dir="src/main/resources">

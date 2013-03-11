@@ -17,7 +17,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 /**
  * This is a sample class to launch a decision table (XLS file)
  */
-public class DecisionTableTest {
+public class CallDecisionTableTest {
 
     public static final void main(String[] args) {
         try {

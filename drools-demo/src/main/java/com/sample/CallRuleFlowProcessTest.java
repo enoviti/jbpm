@@ -1,4 +1,4 @@
-package com.sample.bpmn;
+package com.sample;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -12,13 +12,11 @@ import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
-import com.sample.models.Message;
-
 /**
- * This is a sample file to launch a BPMN process.
+ * This is a sample file to launch a RuleFlow process.
  */
-public class ProcessBpmnTest {
-	
+public class CallRuleFlowProcessTest {
+
     public static final void main(String[] args) {
         try {
             // load up the knowledge base
@@ -26,15 +24,7 @@ public class ProcessBpmnTest {
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
             KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "test");
             // start a new process instance
-     
-            Message message = new Message();
-            message.setMessage("Hello World");
-            message.setStatus(Message.HELLO);
-            ksession.insert(message);
-            
-            ksession.startProcess("log-me");
-            ksession.fireAllRules();
-            
+            ksession.startProcess("com.sample.ruleflow");
             logger.close();
         } catch (Throwable t) {
             t.printStackTrace();
@@ -43,8 +33,7 @@ public class ProcessBpmnTest {
 
     private static KnowledgeBase readKnowledgeBase() throws Exception {
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kbuilder.add(ResourceFactory.newClassPathResource("log-me.drl"), ResourceType.DRL);
-        kbuilder.add(ResourceFactory.newClassPathResource("log-me.bpmn"), ResourceType.BPMN2);
+        kbuilder.add(ResourceFactory.newClassPathResource("ruleflow.rf"), ResourceType.DRF);
         KnowledgeBuilderErrors errors = kbuilder.getErrors();
         if (errors.size() > 0) {
             for (KnowledgeBuilderError error: errors) {
@@ -56,6 +45,5 @@ public class ProcessBpmnTest {
         kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
         return kbase;
     }
-    
 
 }

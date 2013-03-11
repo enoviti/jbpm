@@ -1,4 +1,7 @@
-Copy files distribution file to:
+Project to extract BRMS dependencies from a ZIP distribution (brms-p-5.3.1.GA-deployable-ee6.zip not included) 
+and install them in your local Maven Repository.
+
+Copy ZIP file to:
 - src
   - main
   - resources
@@ -6,6 +9,8 @@ Copy files distribution file to:
 
 To install dependencies:
 $ mvn clean install -Pdeploy-to-maven
+Note: The last step (creation of the JAR) can be killed (ctrl + c) because by you don't actually need that JAR file. 
+By the time that this jar creation is going on, all the dependencies have been installed with 'mvn install'.
 
 Dependencies installed by this project:
 

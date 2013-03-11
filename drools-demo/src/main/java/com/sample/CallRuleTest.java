@@ -15,6 +15,14 @@ import org.drools.runtime.rule.impl.AgendaImpl;
 
 import com.sample.models.Message;
 
+/**
+ * Simple Class to test calling a rule (DRL file) that is part of a jbpm process (ruleflow).
+ * 
+ * The DRL uses ruleflow-group "group1" and therefore the Agenda has to activate the ruleflow-group explicitly. 
+ * 
+ * @author Miguel
+ *
+ */
 public class CallRuleTest {
 	
 	

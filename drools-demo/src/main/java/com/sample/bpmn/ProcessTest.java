@@ -1,4 +1,4 @@
-package com.samples.bpmn;
+package com.sample.bpmn;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -13,7 +13,7 @@ import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
 /**
- * This is a sample file to launch a process.
+ * This is a sample file to launch a RuleFlow process.
  */
 public class ProcessTest {
 

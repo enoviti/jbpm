@@ -27,14 +27,14 @@ unzip -q -o -d ./binaries jboss-jbpm-engine.zip
 cd binaries
 
 #echo
-#echo Installing parent POMs:
-#installPom org.drools droolsjbpm-parent
-#installPom org.drools droolsjbpm-knowledge
-#installPom org.drools drools-multiproject
-#installPom org.drools droolsjbpm-tools
-#installPom org.drools droolsjbpm-integration
-#installPom org.drools guvnor
-#installPom org.jbpm jbpm
+echo Installing parent POMs:
+installPom org.drools droolsjbpm-parent
+installPom org.drools droolsjbpm-knowledge
+installPom org.drools drools-multiproject
+installPom org.drools droolsjbpm-tools
+installPom org.drools droolsjbpm-integration
+installPom org.drools guvnor
+installPom org.jbpm jbpm
 
 echo
 echo Installing Drools binaries:

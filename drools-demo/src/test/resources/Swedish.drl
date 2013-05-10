@@ -1,10 +1,13 @@
 package se.sjv.test.swedish
 
+global java.util.List messageList;
+
 dialect "mvel" 
 
 rule "MyRuleÅÄÖ"
     when
     then
+        messageList.add("MyÅÄÖ");
     	System.out.println("Swedish rule read ÅÖÄåöä");
 end
 

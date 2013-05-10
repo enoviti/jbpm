@@ -2,39 +2,34 @@ package com.sample.swedish;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderErrors;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
+import org.drools.builder.*;
 import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Test;
 
-import com.sample.models.Message;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class SwedishCharatersTest {
+import static org.junit.Assert.assertEquals;
+
+public class SwedishCharactersTest {
 	
 	private void setupTestCase() {
 		try {
             // load up the knowledge base
             KnowledgeBase kbase = readKnowledgeBase();
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
-            KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "test");
-            // start a new process instance
-     
-            Message message = new Message();
-            message.setMessage("Hello World");
-            message.setStatus(Message.HELLO);
-            ksession.insert(message);
-            
-            //AgendaImpl agenda = (AgendaImpl)ksession.getAgenda();
-            //agenda.activateRuleFlowGroup("group1");
-            
-            //ksession.startProcess("log-me");
+            KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "rules-log");
+
+            List<String> list = new ArrayList<String>();
+			ksession.getGlobals().set("messageList", list);
+			
             ksession.fireAllRules();
+			System.out.println("Expecting MyÅÄÖ, got: " + list);
+			assertEquals(list, Arrays.asList("MyÅÄÖ"));
             
             logger.close();
         } catch (Throwable t) {

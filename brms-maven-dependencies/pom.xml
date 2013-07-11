@@ -48,7 +48,7 @@
                                         <mkdir dir="${build.dir}/m2/${maven.brms.version}" />
 
                                         <unzip
-                                            src="src/main/resources/brms-p-${distro.brms.version}.GA-deployable-ee6.zip"
+                                            src="installs/brms-p-${distro.brms.version}.GA-deployable-ee6.zip"
                                             dest="${build.dir}">
                                             <patternset>
                                                 <include name="**/*brms-engine*.zip" />

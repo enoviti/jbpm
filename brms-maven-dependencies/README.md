@@ -1,3 +1,14 @@
+Update:
+New script install-drools-runtime-update.sh does not need to be run as a Maven goal.
+Copy brms-p-5.3.1.GA-deployable-ee6.zip into a ./installs
+
+Find parent POM.xml files in this github.com account:
+https://github.com/eschabell/brms-customer-evaluation-demo/tree/master/support
+
+Run:
+./install-drools-runtime-update.sh
+
+------------------------------------ Old script ------------------------------------
 Project to extract BRMS dependencies from a ZIP distribution (brms-p-5.3.1.GA-deployable-ee6.zip not included) 
 and install them in your local Maven Repository.
 

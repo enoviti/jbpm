@@ -24,6 +24,8 @@ unzip -q $SRC_DIR/$BRMS jboss-brms-engine.zip
 unzip -q jboss-brms-engine.zip binaries/*
 unzip -q $SRC_DIR/$BRMS jboss-jbpm-engine.zip
 unzip -q -o -d ./binaries jboss-jbpm-engine.zip
+unzip -q $SRC_DIR/$BRMS jboss-jbpm-console-ee6.zip
+unzip -q -o -j -d ./binaries jboss-jbpm-console-ee6.zip business-central-server.war/WEB-INF/lib/jbpm-gwt*
 cd binaries
 
 #echo
@@ -35,6 +37,7 @@ installPom org.drools droolsjbpm-tools
 installPom org.drools droolsjbpm-integration
 installPom org.drools guvnor
 installPom org.jbpm jbpm
+installPom org.jbpm jbpm-gwt
 
 echo
 echo Installing Drools binaries:
@@ -65,6 +68,10 @@ installBinary org.jbpm jbpm-bpmn2
 installBinary org.jbpm jbpm-workitems
 installBinary org.jbpm jbpm-human-task
 installBinary org.jbpm jbpm-test
+installBinary org.jbpm jbpm-gwt-core
+installBinary org.jbpm jbpm-gwt-form
+installBinary org.jbpm jbpm-gwt-graph
+installBinary org.jbpm jbpm-gwt-shared
 
 cd ..
 rm -rf binaries

@@ -9,12 +9,12 @@ SERVER_URL=http://dendcvch05.aimco.com:8081/nexus/content/repositories/thirdpart
 command -v mvn -q >/dev/null 2>&1 || { echo >&2 "Maven is required but not installed yet... aborting."; exit 1; }
 
 deployPom() {
-    echo "--> Deploying pom:" $2-$VERSION.pom.xml 
+    echo "--> Deploying pom:" $2-$VERSION.pom.xml
     mvn -q deploy:deploy-file -Dfile=../$SRC_DIR/$2-$VERSION.pom.xml -DgroupId=$1 -DartifactId=$2 -Dversion=$VERSION -Dpackaging=pom -DrepositoryId=$SERVER_ID -Durl=$SERVER_URL;
 }
 
 deployBinary() {
-    echo "--> Deploying jar:" $1.$2-$VERSION.jar 
+    echo "--> Deploying jar:" $1.$2-$VERSION.jar
     unzip -q $2-$VERSION.jar META-INF/maven/$1/$2/pom.xml;
     mvn -q deploy:deploy-file -DpomFile=./META-INF/maven/$1/$2/pom.xml -Dfile=$2-$VERSION.jar -DgroupId=$1 -DartifactId=$2 -Dversion=$VERSION -Dpackaging=jar -DrepositoryId=$SERVER_ID -Durl=$SERVER_URL;
 }
@@ -35,7 +35,7 @@ unzip -q $SRC_DIR/$BRMS jboss-jbpm-engine.zip
 unzip -q -o -d ./binaries jboss-jbpm-engine.zip
 unzip -q $SRC_DIR/$BRMS jboss-jbpm-console-ee6.zip
 unzip -q -o -j -d ./binaries jboss-jbpm-console-ee6.zip business-central-server.war/WEB-INF/lib/jbpm-gwt*
-unzip -q -d ./sources $SRC_DIR/$BRMS_SRC 
+unzip -q -d ./sources $SRC_DIR/$BRMS_SRC
 cd binaries
 
 echo
@@ -52,7 +52,7 @@ deployPom org.jbpm jbpm-gwt
 echo
 echo Deploying Drools binaries:
 # droolsjbpm-knowledge
-deployBinary org.drools knowledge-api 
+deployBinary org.drools knowledge-api
 # drools-multiproject
 deployBinary org.drools drools-core
 deployBinary org.drools drools-compiler
